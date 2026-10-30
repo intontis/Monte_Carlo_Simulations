@@ -6,9 +6,7 @@ number Z from nothing but noisy measured angles.
 
 ## 🔬 Background
 
-In 1911 Rutherford fired alpha particles at a thin gold foil. Almost all of them passed 
-through with little or no deflection, but a tiny fraction bounced back by more than 90°. 
-That could only happen if the atom's positive charge sits in a tiny, dense nucleus.
+In 1909, Hans Geiger and Ernest Marsden, working in Rutherford's laboratory, fired alpha particles at thin metal foils, including gold. Most passed through with little deflection, but a tiny fraction scattered backwards by more than 90°. In 1911, Rutherford explained these surprising results by proposing that an atom's positive charge and most of its mass are concentrated in a tiny, dense nucleus.
 
 The physics of a single particle is simple. A particle aimed with **impact parameter b** 
 (its miss distance from the nucleus) is deflected by the angle:
@@ -40,7 +38,7 @@ the angle is never chosen, it is the *outcome*.
 - Large-angle events are rare but not impossible (log scale)
 - **Theory check:** a particle scatters beyond 90° exactly when b < a, so the expected 
   fraction is (a / b_max)². Simulation: **16 events** vs theory **16 ± 4** 
-  (+0.2 std) → the simulation matches the exact result
+  (+0.1 std) → the simulation matches the exact result
 - The ± is the typical random fluctuation of a count (1 standard deviation)
 
 ### Inverse Problem: Recovering Z from Noisy Angles
@@ -48,9 +46,8 @@ the angle is never chosen, it is the *outcome*.
 ![Inverse Scattering](results/02_inverse_scattering.png)
 
 - A mystery material (silver, Z = 47) is simulated and its Z is **hidden**
-- Detector noise: Gaussian, 5° (realistic is closer to 1°, 10° is a stress test)
-- The estimator only sees the measured angles — never the impact parameters, 
-  which no real experiment can measure
+- Detector noise: Gaussian, 5°. The notebook also compares lower noise (1°) and higher noise (10°).
+- The estimator only sees the measured angles — never the impact parameters, which no real experiment can measure
 - **Method — simulation matching:**
   1. For every candidate Z (1 to 118), simulate the same experiment with the same 
      noise and record the median measured angle (a calibration curve)
@@ -63,22 +60,21 @@ the angle is never chosen, it is the *outcome*.
 ![Distribution of the recovered Z](results/02_inverse_distribution.png)
 
 - The experiment is repeated **500 times** and every recovered Z is collected
-- The estimates are centered on the true Z (mean ≈ 47.0) with a spread of σ ≈ 0.8–0.9
+- The estimates are centered on the true Z (mean ≈ 47.05) with a spread of σ ≈ 0.76
 - The red curve is a normal distribution **fitted** to the results, (mean and std taken 
   from the data) not predicted from theory
-- One experiment is typically within ±1 of the true Z about 90–95% of the time
-- Numbers move by a few percent between runs, because the calibration curve is itself 
-  a simulation
+- In this run, 96% of experiments recovered Z within ±1
+- These results are Monte Carlo estimates; changing the random seed or sample sizes can shift them slightly
 
 ### Effect of Detector Noise
 
 | Detector Noise | Std of Recovered Z | Exactly Right | Within ±1 |
 |---|---|---|---|
 | 1° | 0.26 | 93% | 100% |
-| 5° | 0.82 | 50% | 95% |
-| 10° | 1.54 | 21% | 70% |
+| 5° | 0.83 | 45% | 95% |
+| 10° | 1.42 | 31% | 76% |
 
-- Z is recovered well at realistic noise (1°) and degrades gracefully as noise grows
+- Z is recovered well in the low-noise (1°) case and degrades as noise grows
 - The typical deflection in this setup is only ≈ 6°, so 10° of noise is larger than 
   the signal itself — the method still works, with a visibly wider spread
 
@@ -86,8 +82,8 @@ the angle is never chosen, it is the *outcome*.
 
 - Point nucleus, infinitely heavy target (no recoil), non-relativistic, single scattering
 - No electron screening and no energy loss in the foil
-- Beam radius b_max is a toy choice (a / b_max ≈ 0.04), scattering is far stronger than 
-  in a real foil, so large-angle events are visible with a 10⁵ particle simulation
+- Beam radius b_max is a toy choice (a / b_max ≈ 0.04), making large-angle events visible in a 10,000-particle simulation  
+- This is not a realistic model of the beam geometry in an actual gold-foil experiment
 - Detector noise is modeled as Gaussian on the measured angle, clipped to the physical range
 
 ## ✅ Tests
