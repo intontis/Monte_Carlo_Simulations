@@ -34,4 +34,5 @@ RUN mkdir -p /app/results \
 USER 10001:0
 
 # 9. Default command: execute the test suite
-CMD ["python", "-m", "pytest", "-v"]
+ENTRYPOINT ["python", "run_simulation.py"]
+CMD ["--help"]
