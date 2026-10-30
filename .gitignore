@@ -1,2 +1,14 @@
-.pytest_cache/
+# Python virtual environments
+.venv/
+
+# Python cache
 __pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Coverage
+.coverage
+htmlcov/
