@@ -1,4 +1,5 @@
-name: tests
+
+name: tests-and-container
 
 on:
   push:
@@ -6,9 +7,15 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
+  # PRIORITY 1: Test the Python project across three versions
   test:
+    name: Python tests (${{ matrix.python-version }})
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         python-version: ["3.12", "3.13", "3.14"]
@@ -31,3 +38,46 @@ jobs:
 
       - name: Run tests with coverage
         run: python -m pytest -v --cov=scattering --cov-report=term-missing --cov-fail-under=80
+
+  # PRIORITY 2: Build, test and publish the container
+  container:
+    name: Build and publish container
+    needs: test
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      IMAGE_NAME: ghcr.io/intontis/monte-carlo-simulations
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Build container image
+        run: docker build -t monte-carlo-simulations:ci .
+
+      - name: Run tests inside container
+        run: docker run --rm monte-carlo-simulations:ci
+
+      - name: Login to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag container image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag monte-carlo-simulations:ci "${IMAGE_NAME}:latest"
+          docker tag monte-carlo-simulations:ci "${IMAGE_NAME}:sha-${GITHUB_SHA}"
+
+      - name: Push image to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker push "${IMAGE_NAME}:latest"
+          docker push "${IMAGE_NAME}:sha-${GITHUB_SHA}"
