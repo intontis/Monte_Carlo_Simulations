@@ -13,6 +13,7 @@ permissions:
 jobs:
   # PRIORITY 1: Test the Python project across three versions
   test:
+    if: github.event_name == 'pull_request'
     name: Python tests (${{ matrix.python-version }})
     runs-on: ubuntu-latest
 
@@ -43,6 +44,12 @@ jobs:
   container:
     name: Build and publish container
     needs: test
+    if: |
+      cancelled() &&
+      (
+       github.event_name == 'push' ||
+       (github.event_name == 'pull_request' && needs.test.result == 'success')
+      )
     runs-on: ubuntu-latest
 
     permissions:
@@ -63,6 +70,7 @@ jobs:
         run: docker run --rm monte-carlo-simulations:ci --help
 
       - name: Run tests inside container
+        if: github.event_name == 'pull_request'
         run: docker run --rm --entrypoint python monte-carlo-simulations:ci -m pytest -v
 
       - name: Login to GitHub Container Registry
