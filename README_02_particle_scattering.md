@@ -35,7 +35,7 @@ the angle is never chosen, it is the *outcome*.
 
 ![Rutherford Scattering](results/02_particle_scattering.png)
 
-- 100,000 alpha particles on a gold nucleus
+- 10,000 alpha particles on a gold nucleus
 - **97.8%** scatter below 30° → most particles barely deflect
 - Large-angle events are rare but not impossible (log scale)
 - **Theory check:** a particle scatters beyond 90° exactly when b < a, so the expected 
