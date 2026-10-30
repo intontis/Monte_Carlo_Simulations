@@ -59,8 +59,11 @@ jobs:
       - name: Build container image
         run: docker build -t monte-carlo-simulations:ci .
 
+      - name: Check simulation runner
+        run: docker run --rm monte-carlo-simulations:ci --help
+
       - name: Run tests inside container
-        run: docker run --rm monte-carlo-simulations:ci
+        run: docker run --rm --entrypoint python monte-carlo-simulations:ci -m pytest -v
 
       - name: Login to GitHub Container Registry
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
