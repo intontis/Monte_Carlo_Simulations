@@ -89,7 +89,7 @@ Monte Carlo pi estimation is the simplest example of a family of methods used in
 
 ## 🛠️ Tech Stack
 
-- Python 3.14.7
+- Python 3.12, 3.13, and 3.14 (CI-tested)
 - NumPy
 - Matplotlib
 - Jupyter Notebook

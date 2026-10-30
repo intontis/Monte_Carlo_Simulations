@@ -36,10 +36,10 @@ the angle is never chosen, it is the *outcome*.
 ![Rutherford Scattering](results/02_particle_scattering.png)
 
 - 10,000 alpha particles on a gold nucleus
-- **97.8%** scatter below 30° → most particles barely deflect
+- **97.97%** scatter below 30° → most particles barely deflect
 - Large-angle events are rare but not impossible (log scale)
 - **Theory check:** a particle scatters beyond 90° exactly when b < a, so the expected 
-  fraction is (a / b_max)². Simulation: **158 particles** vs theory **156 ± 12** 
+  fraction is (a / b_max)². Simulation: **16 events** vs theory **16 ± 4** 
   (+0.2 std) → the simulation matches the exact result
 - The ± is the typical random fluctuation of a count (1 standard deviation)
 
@@ -56,7 +56,7 @@ the angle is never chosen, it is the *outcome*.
      noise and record the median measured angle (a calibration curve)
   2. Take the median angle of the mystery data
   3. Pick the Z whose predicted median is closest
-- Because the calibration includes the noise, the estimator is **unbiased**
+- Because the calibration includes the noise, the estimator is close to unbiased under the tested conditions
 
 ### How Reliable Is One Experiment?
 
@@ -128,7 +128,7 @@ The same forward-and-inverse logic is used in:
 
 ## 🛠️ Tech Stack
 
-- Python 3.14.7
+- Python 3.12, 3.13, and 3.14 (CI-tested)
 - NumPy
 - Matplotlib
 - pytest
